@@ -12,5 +12,9 @@ export default async function componentDecorator(fd) {
     const module = await import('./components/wizard.js');
     return module.default;
   }
+  if (type.endsWith('imagechoice')) {
+    const module = await import('./components/imagechoice.js');
+    return module.default;
+  }
   return null;
 }
