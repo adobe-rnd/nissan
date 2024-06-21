@@ -36,22 +36,22 @@ function days(endDate, startDate) {
 function populateImageChoice(imageChoiceField, globals) {
   const response = [
     {
-      id: "JUKEF16B",
+      id: 'JUKEF16B',
       name: 'Nissan Juke',
       source: 'https://www-europe.nissan-cdn.net/content/dam/Nissan/gb/vehicles/juke/my23/Juke_Packshot_Yellow.png.ximg.l_6_m.smart.png',
     },
     {
-      id: "QASHQAIJ12B",
+      id: 'QASHQAIJ12B',
       name: 'New Nissan Qashqai',
       source: 'https://www-europe.nissan-cdn.net/content/dam/Nissan/nissan_europe/UNVEIL_QQ-PUSH/new-unveil-qashqai.png.ximg.l_6_m.smart.png',
     },
     {
-      id: "XTRAILT33B",
+      id: 'XTRAILT33B',
       name: 'Nissan X-Trail',
       source: 'https://www-europe.nissan-cdn.net/content/dam/Nissan/gb/vehicles/packshots/x-trail-my24/MAIN_MENU_MY24_ALLOYS.jpg.ximg.l_6_m.smart.jpg',
     },
   ];
-  globals.functions.setProperty(imageChoiceField, {enum: response});
+  globals.functions.setProperty(imageChoiceField, { enum: response });
 }
 
 /**
@@ -63,27 +63,35 @@ function populateImageChoice(imageChoiceField, globals) {
 function populateSelectedModel(modelChoiceField, selectedModelPanel, globals) {
   // get model details based on the selected model (modelChoiceField)
   const modelDetailsInfoMap = {
-    "JUKEF16B": {
-      id: "JUKEF16B",
+    JUKEF16B: {
+      id: 'JUKEF16B',
       name: 'Nissan Juke',
       source: 'https://www-europe.nissan-cdn.net/content/dam/Nissan/gb/vehicles/juke/my23/Juke_Packshot_Yellow.png.ximg.l_6_m.smart.png',
     },
-    "QASHQAIJ12B": {
-      id: "QASHQAIJ12B",
+    QASHQAIJ12B: {
+      id: 'QASHQAIJ12B',
       name: 'New Nissan Qashqai',
       source: 'https://www-europe.nissan-cdn.net/content/dam/Nissan/nissan_europe/UNVEIL_QQ-PUSH/new-unveil-qashqai.png.ximg.l_6_m.smart.png',
     },
-    "XTRAILT33B" :{
-      id: "XTRAILT33B",
+    XTRAILT33B: {
+      id: 'XTRAILT33B',
       name: 'Nissan X-Trail',
       source: 'https://www-europe.nissan-cdn.net/content/dam/Nissan/gb/vehicles/packshots/x-trail-my24/MAIN_MENU_MY24_ALLOYS.jpg.ximg.l_6_m.smart.jpg',
-    }
-  }
+    },
+  };
   const selectedModel = modelDetailsInfoMap[modelChoiceField];
 
-  globals.functions.setProperty(selectedModelPanel.selectedModelImage, {value: selectedModel.source});
-  globals.functions.setProperty(selectedModelPanel.selectedModelName, {value: selectedModel.name});
+  globals.functions.setProperty(
+    selectedModelPanel.selectedModelImage,
+    { value: selectedModel.source },
+  );
+  globals.functions.setProperty(
+    selectedModelPanel.selectedModelName,
+    { value: selectedModel.name },
+  );
 }
 
 // eslint-disable-next-line import/prefer-default-export
-export { getFullName, days, populateImageChoice, populateSelectedModel };
+export {
+  getFullName, days, populateImageChoice, populateSelectedModel,
+};

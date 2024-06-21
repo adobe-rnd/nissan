@@ -565,6 +565,7 @@ main form .wizard > .current-wizard-step.panel-wrapper:last-of-type ~ .wizard-bu
     position: relative;
     cursor: pointer
 }
+
 .model-radio {
     height: 100%;
     padding: 0;
