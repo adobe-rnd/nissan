@@ -4,7 +4,6 @@ import { getId } from '../util.js';
 export default async function decorate(fieldDiv, field) {
   const labelEl = fieldDiv.querySelector('legend');
   fieldDiv.replaceChildren(labelEl);
-  console.log(field.enum);
   const models = field.enum;
 
   const outerdiv = document.createElement('div');

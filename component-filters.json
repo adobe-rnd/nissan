@@ -45,6 +45,7 @@
       "text-input",
       "number-input",
       "date-input",
+      "datetime-input",
       "panel",
       "checkbox",
       "drop-down",
