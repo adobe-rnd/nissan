@@ -1,2 +1,5 @@
 mountpoints:
-  /: https://author-p51113-e1377975.adobeaemcloud.com/bin/franklin.delivery/adobe-rnd/nissan-poc/main
+/:
+  url: "https://author-p51113-e1377975.adobeaemcloud.com/bin/franklin.delivery/adobe-rnd/nissan-poc/main"
+  type: "markup"
+  suffix: ".html"
