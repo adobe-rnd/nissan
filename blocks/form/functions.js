@@ -1,3 +1,85 @@
+const powertrainConfigurations = [
+  {
+    rank: '1',
+    powertrain: '100% Electric',
+    description: 'Entirely powered by an electric motor using a battery ',
+  },
+  {
+    rank: '2',
+    powertrain: 'e-POWER',
+    description: 'A combination of a petrol engine which charges the battery and an electric motor that turns wheels ',
+  },
+  {
+    rank: '3',
+    powertrain: 'Hybrid',
+    description: 'Powered by a combination of a petrol engine and an electric motor',
+  },
+  {
+    rank: '4',
+    powertrain: 'Petrol Mild Hybrid',
+    description: 'Powered by a petrol engine supported by a battery during acceleration and cruising',
+  },
+  {
+    rank: '5',
+    powertrain: 'Petrol',
+    description: 'Powered by a conventional petrol engine',
+  },
+  {
+    rank: '6',
+    powertrain: 'Diesel',
+    description: 'Powered by a conventional diesel engine',
+  },
+];
+
+const carModels = [
+  {
+    id: 'JUKEF16B',
+    name: 'New Nissan Juke',
+    source: '/content/dam/forms-poc/nissan/juke.png',
+    powertrain: ['Hybrid', 'Petrol'],
+  },
+  {
+    id: 'QASHQAIJ12B',
+    name: 'New Nissan Qashqai',
+    source: '/content/dam/forms-poc/nissan/qashqai.png',
+    powertrain: ['Petrol Mild Hybrid', 'e-POWER'],
+  },
+  {
+    id: 'XTRAILT33B',
+    name: 'Nissan X-Trail',
+    source: '/content/dam/forms-poc/nissan/x-trail.jpg',
+    powertrain: ['Petrol Mild Hybrid', 'Diesel'],
+  },
+  {
+    id: 'LEAFZE1A',
+    name: 'Nissan LEAF',
+    source: '/content/dam/forms-poc/nissan/leaf.jpg',
+    powertrain: ['100% Electric'],
+  },
+  {
+    id: 'ARIYAFE0A',
+    name: 'Nissan ARIYA',
+    source: '/content/dam/forms-poc/nissan/ariya.jpg',
+    powertrain: ['100% Electric'],
+  },
+  {
+    id: 'QASHQAIJ12A',
+    name: 'Nissan Townstar',
+    source: '/content/dam/forms-poc/nissan/townstar.jpg',
+    powertrain: ['Petrol Mild Hybrid', 'e-POWER'],
+  },
+];
+
+const carModelsMap = carModels.reduce((acc, model) => {
+  acc[model.id] = model;
+  return acc;
+}, {});
+
+const powertrainConfigMap = powertrainConfigurations.reduce((acc, powertrain) => {
+  acc[powertrain.powertrain] = powertrain;
+  return acc;
+}, {});
+
 /**
  * Get Full Name
  * @name getFullName Concats first name and last name
@@ -34,60 +116,44 @@ function days(endDate, startDate) {
  * @param {scope} globals
  */
 function populateImageChoice(imageChoiceField, globals) {
-  const response = [
-    {
-      id: 'JUKEF16B',
-      name: 'Nissan Juke',
-      source: 'https://www-europe.nissan-cdn.net/content/dam/Nissan/gb/vehicles/juke/my23/Juke_Packshot_Yellow.png.ximg.l_6_m.smart.png',
-    },
-    {
-      id: 'QASHQAIJ12B',
-      name: 'New Nissan Qashqai',
-      source: 'https://www-europe.nissan-cdn.net/content/dam/Nissan/nissan_europe/UNVEIL_QQ-PUSH/new-unveil-qashqai.png.ximg.l_6_m.smart.png',
-    },
-    {
-      id: 'XTRAILT33B',
-      name: 'Nissan X-Trail',
-      source: 'https://www-europe.nissan-cdn.net/content/dam/Nissan/gb/vehicles/packshots/x-trail-my24/MAIN_MENU_MY24_ALLOYS.jpg.ximg.l_6_m.smart.jpg',
-    },
-  ];
-  globals.functions.setProperty(imageChoiceField, { enum: response });
+  globals.functions.setProperty(imageChoiceField, { enum: carModels });
 }
 
 /**
  * Populates the image choice component with the given options
- * @param {*} modelChoiceField
- * @param {object} selectedModelPanel
+ * @param {*} chooseModel
+ * @param {object} imageField
+ * @param {object} modelName
+ * @param {object} powerTrainField
  * @param {scope} globals
  */
-function populateSelectedModel(modelChoiceField, selectedModelPanel, globals) {
+function populateSelectedModel(chooseModel, imageField, modelName, powerTrainField, globals) {
   // get model details based on the selected model (modelChoiceField)
-  const modelDetailsInfoMap = {
-    JUKEF16B: {
-      id: 'JUKEF16B',
-      name: 'Nissan Juke',
-      source: 'https://www-europe.nissan-cdn.net/content/dam/Nissan/gb/vehicles/juke/my23/Juke_Packshot_Yellow.png.ximg.l_6_m.smart.png',
-    },
-    QASHQAIJ12B: {
-      id: 'QASHQAIJ12B',
-      name: 'New Nissan Qashqai',
-      source: 'https://www-europe.nissan-cdn.net/content/dam/Nissan/nissan_europe/UNVEIL_QQ-PUSH/new-unveil-qashqai.png.ximg.l_6_m.smart.png',
-    },
-    XTRAILT33B: {
-      id: 'XTRAILT33B',
-      name: 'Nissan X-Trail',
-      source: 'https://www-europe.nissan-cdn.net/content/dam/Nissan/gb/vehicles/packshots/x-trail-my24/MAIN_MENU_MY24_ALLOYS.jpg.ximg.l_6_m.smart.jpg',
-    },
-  };
-  const selectedModel = modelDetailsInfoMap[modelChoiceField];
+  const selectedModel = carModelsMap[chooseModel];
+  const enumNames = [];
+  const enumValues = [];
+
+  if (!selectedModel) {
+    return;
+  }
+  selectedModel.powertrain.forEach((powertrain) => {
+    if (powertrainConfigMap[powertrain]) {
+      enumNames.push(powertrainConfigMap[powertrain].description);
+      enumValues.push(powertrain);
+    }
+  });
 
   globals.functions.setProperty(
-    selectedModelPanel.selectedModelImage,
+    imageField,
     { value: selectedModel.source },
   );
   globals.functions.setProperty(
-    selectedModelPanel.selectedModelName,
+    modelName,
     { value: selectedModel.name },
+  );
+  globals.functions.setProperty(
+    powerTrainField,
+    { enum: enumValues, enumNames },
   );
 }
 
