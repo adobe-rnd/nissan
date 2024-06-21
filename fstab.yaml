@@ -1,5 +1,5 @@
 mountpoints:
-/:
-  url: "https://author-p51113-e1377975.adobeaemcloud.com/bin/franklin.delivery/adobe-rnd/nissan-poc/main"
-  type: "markup"
-  suffix: ".html"
+  /:
+    url: https://author-p51113-e1377975.adobeaemcloud.com/bin/franklin.delivery/jalagari/gems/main
+    type: "markup"
+    suffix: ".md.html"
