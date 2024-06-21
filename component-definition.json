@@ -233,6 +233,27 @@
             }
           }
         },
+
+        {
+          "title": "Card Selection",
+          "id": "card-selection",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/fd/components/form/radiobutton/v1/radiobutton",
+                "template": {
+                  "jcr:title": "Radio Group",
+                  "fieldType": "radio-group",
+                  "fd:viewType": "card-selection",
+                  "enum": ["0", "1"],
+                  "enumNumes": ["Item 1", "Item 2"],
+                  "enabled": true,
+                  "visible": true
+                }
+              }
+            }
+          }
+        },
         {
           "title": "Text",
           "id": "plain-text",
