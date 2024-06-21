@@ -128,6 +128,24 @@
           }
         },
         {
+          "title": "Location",
+          "id": "location",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/fd/components/form/textinput/v1/textinput",
+                "template": {
+                  "jcr:title": "Location",
+                  "fieldType": "text-input",
+                  "fd:viewType": "location",
+                  "enabled": true,
+                  "visible": true
+                }
+              }
+            }
+          }
+        },
+        {
           "title": "DateTime Picker",
           "id": "datetime-input",
           "plugins": {

@@ -1,3 +1,8 @@
+const customComponent = {
+  datetime: './components/datetime.js',
+  location: './components/location.js',
+};
+
 /**
  * returns a decorator to decorate the field definition
  *
@@ -16,8 +21,8 @@ export default async function componentDecorator(fd) {
     const module = await import('./components/imagechoice.js');
     return module.default;
   }
-  if (type === 'datetime') {
-    const module = await import('./components/datetime.js');
+  if (customComponent[type]) {
+    const module = await import(customComponent[type]);
     return module.default;
   }
   return null;

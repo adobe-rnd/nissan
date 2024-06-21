@@ -56,7 +56,8 @@
       "form-image",
       "form-submit-button",
       "form-reset-button",
-      "file-input"
+      "file-input",
+      "location"
     ]
   }
 ]
