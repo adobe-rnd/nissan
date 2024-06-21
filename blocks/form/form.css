@@ -113,7 +113,7 @@ main .form form .field-invalid .field-description {
     font-weight: 700;
 }
 
-main .form input,
+main .form input:not(.model-radio),
 main .form textarea,
 main .form select {
     background-color: var(--form-input-background-color);
@@ -142,7 +142,7 @@ main .form input[type='file'] {
 }
 
 main .form input[type='checkbox'],
-main .form input[type='radio'] {
+main .form input[type='radio']:not(.model-radio) {
     width: 16px;
     height: 16px;
     flex: none;
@@ -545,4 +545,55 @@ main .form .form-image-wrapper  img {
 main form .wizard > .current-wizard-step.panel-wrapper:first-of-type ~ .wizard-button-wrapper > .wizard-button-prev,
 main form .wizard > .current-wizard-step.panel-wrapper:last-of-type ~ .wizard-button-wrapper > .wizard-button-next {
     display: none;
+}
+
+.image-choice-container {
+    padding: 0;
+    display: grid;
+    gap: 40px 32px;
+    grid-template-columns: repeat(3, 1fr);
+    list-style-type: none;
+}
+
+.model-list-wrapper {
+    margin: 0;
+    list-style-type: none;
+    display: contents;
+}
+
+.model-block {
+    position: relative;
+    cursor: pointer
+}
+.model-radio {
+    height: 100%;
+    padding: 0;
+    width: 100%;
+    position: absolute;
+    appearance: none;
+    cursor: pointer;
+}
+
+.black-border .model-block::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    left: 0;
+    bottom: 0;
+}
+
+.black-border {
+    border-bottom: 4px solid #000;
+    transition: transform .3s;
+    transform: scaleX(0);
+    transform-origin: left;
+}
+
+.model-name {
+    display: block;
+    font: 20px / 26px "Nissan Regular", "Nissan Light", Verdana, Arial, sans-serif;
+    letter-spacing: 1.5px;
+    padding: 12px 0 24px;
+    color: #000;
+    margin: 0;
 }

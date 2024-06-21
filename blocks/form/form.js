@@ -219,6 +219,7 @@ function createPlainText(fd) {
 
 function createImage(fd) {
   const field = createFieldWrapper(fd);
+  field.id = fd.id;
   const imagePath = fd.source || fd.properties['fd:repoPath'] || '';
   const image = `
   <picture>

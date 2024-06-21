@@ -73,6 +73,13 @@ async function fieldChanged(payload, form, generateFormRendition) {
           });
         } else if (fieldType === 'checkbox') {
           field.checked = compare(currentValue, field.value, type);
+        } else if (fieldType === 'image') {
+          field.querySelectorAll('source').forEach((el) => {
+            el.srcset = currentValue;
+          });
+          field.querySelectorAll('img').forEach((el) => {
+            el.src = currentValue;
+          });
         } else if (fieldType === 'plain-text') {
           field.innerHTML = currentValue;
         } else if (field.type !== 'file') {
