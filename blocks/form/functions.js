@@ -157,7 +157,18 @@ function populateSelectedModel(chooseModel, imageField, modelName, powerTrainFie
   );
 }
 
+/**
+ * Populates the dealership field with the given options
+ * @param {*} chooseModel
+ * @param {*} location
+ * @param {object} dealershipField
+ * @param {scope} globals
+ */
+function populateDealership(chooseModel, location, dealershipField, globals) {
+
+}
+
 // eslint-disable-next-line import/prefer-default-export
 export {
-  getFullName, days, populateImageChoice, populateSelectedModel,
+  getFullName, days, populateImageChoice, populateSelectedModel, populateDealership,
 };
