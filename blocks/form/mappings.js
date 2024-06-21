@@ -16,5 +16,9 @@ export default async function componentDecorator(fd) {
     const module = await import('./components/imagechoice.js');
     return module.default;
   }
+  if (type === 'datetime') {
+    const module = await import('./components/datetime.js');
+    return module.default;
+  }
   return null;
 }

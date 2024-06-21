@@ -128,6 +128,24 @@
           }
         },
         {
+          "title": "DateTime Picker",
+          "id": "datetime-input",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/fd/components/form/textinput/v1/textinput",
+                "template": {
+                  "jcr:title": "Date Time Input",
+                  "fieldType": "text-input",
+                  "fd:viewType": "datetime",
+                  "enabled": true,
+                  "visible": true
+                }
+              }
+            }
+          }
+        },
+        {
           "title": "Panel",
           "id": "panel",
           "plugins": {

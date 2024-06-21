@@ -497,6 +497,144 @@
         ]
     },
     {
+        "id": "datetime-input",
+        "fields": [
+            {
+                "component": "container",
+                "name": "basic",
+                "label": "Basic",
+                "collapsible": false,
+                "fields": [
+                    {
+                        "component": "text",
+                        "name": "name",
+                        "label": "Name",
+                        "valueType": "string",
+                        "required": true
+                    },
+                    {
+                        "component": "text",
+                        "name": "jcr:title",
+                        "label": "Label",
+                        "valueType": "string"
+                    },
+                    {
+                        "component": "text",
+                        "name": "placeholder",
+                        "label": "Placeholder text",
+                        "valueType": "string"
+                    },
+                    {
+                        "component": "text",
+                        "name": "dataRef",
+                        "label": "Bind reference",
+                        "valueType": "string"
+                    },
+                    {
+                        "component": "boolean",
+                        "name": "visible",
+                        "label": "Show Component",
+                        "valueType": "boolean",
+                        "value": true
+                    },
+                    {
+                        "component": "boolean",
+                        "name": "enabled",
+                        "label": "Enable Component",
+                        "valueType": "boolean",
+                        "value": true
+                    },
+                    {
+                        "component": "boolean",
+                        "name": "readOnly",
+                        "label": "Read-only",
+                        "valueType": "boolean"
+                    },
+                    {
+                        "component": "date-time",
+                        "name": "default",
+                        "label": "Default Value",
+                        "valueType": "date"
+                    },
+                    {
+                        "component": "boolean",
+                        "name": "unboundFormElement",
+                        "label": "Mark as Unbound Form Element",
+                        "valueType": "boolean"
+                    }
+                ]
+            },
+            {
+                "component": "container",
+                "name": "help",
+                "label": "Help Content",
+                "collapsible": true,
+                "fields": [
+                    {
+                        "component": "richtext",
+                        "name": "description",
+                        "label": "Help text",
+                        "valueType": "string"
+                    },
+                    {
+                        "component": "richtext",
+                        "name": "tooltip",
+                        "label": "Short description",
+                        "valueType": "string"
+                    }
+                ]
+            },
+            {
+                "component": "container",
+                "name": "validation",
+                "label": "Validation",
+                "collapsible": true,
+                "fields": [
+                    {
+                        "component": "boolean",
+                        "name": "required",
+                        "label": "Required",
+                        "valueType": "boolean"
+                    },
+                    {
+                        "component": "number",
+                        "name": "minimum",
+                        "label": "Minimum Value",
+                        "valueType": "number",
+                        "description": "Minimum length of the text in the field"
+                    },
+                    {
+                        "component": "number",
+                        "name": "maximum",
+                        "label": "Maximum Value",
+                        "valueType": "number",
+                        "description": "Maximum length of the text in the field"
+                    }
+                ]
+            },
+            {
+                "component": "container",
+                "name": "formats",
+                "label": "Formats",
+                "collapsible": true,
+                "fields": [
+                    {
+                        "component": "select",
+                        "label": "Display Format",
+                        "name": "displayFormat",
+                        "valueType": "string",
+                        "options": [
+                            {
+                                "name": "01 April, 2007",
+                                "value": "d MMMM, y"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "id": "number-input",
         "fields": [
             {
