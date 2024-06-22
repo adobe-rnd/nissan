@@ -233,3 +233,83 @@ export function checkValidation(fieldElement) {
   const message = getValidationMessage(fieldElement, wrapper);
   updateOrCreateInvalidMsg(fieldElement, message);
 }
+
+export function setPlaceholder(element, fd) {
+  if (fd.placeholder) {
+    element.setAttribute('placeholder', fd.placeholder);
+  }
+}
+
+const constraintsDef = Object.entries({
+  'password|tel|email|text': [['maxLength', 'maxlength'], ['minLength', 'minlength'], 'pattern'],
+  'number|range|date': [['maximum', 'Max'], ['minimum', 'Min'], 'step'],
+  file: ['accept', 'Multiple'],
+  panel: [['maxOccur', 'data-max'], ['minOccur', 'data-min']],
+}).flatMap(([types, constraintDef]) => types.split('|')
+  .map((type) => [type, constraintDef.map((cd) => (Array.isArray(cd) ? cd : [cd, cd]))]));
+
+const constraintsObject = Object.fromEntries(constraintsDef);
+
+export function setConstraints(element, fd) {
+  const renderType = getHTMLRenderType(fd);
+  const constraints = constraintsObject[renderType];
+  if (constraints) {
+    constraints
+      .filter(([nm]) => fd[nm])
+      .forEach(([nm, htmlNm]) => {
+        element.setAttribute(htmlNm, fd[nm]);
+      });
+  }
+}
+
+export function createInput(fd) {
+  const input = document.createElement('input');
+  input.type = getHTMLRenderType(fd);
+  setPlaceholder(input, fd);
+  setConstraints(input, fd);
+  return input;
+}
+
+export function createRadioOrCheckbox(fd) {
+  const wrapper = createFieldWrapper(fd);
+  const input = createInput(fd);
+  const [value, uncheckedValue] = fd.enum || [];
+  input.value = value;
+  if (typeof uncheckedValue !== 'undefined') {
+    input.dataset.uncheckedValue = uncheckedValue;
+  }
+  wrapper.insertAdjacentElement('afterbegin', input);
+  return wrapper;
+}
+
+export function createRadioOrCheckboxUsingEnum(fd, wrapper) {
+  const legend = wrapper.querySelector('legend');
+  wrapper.innerHTML = '';
+  wrapper.append(legend);
+  const type = fd.fieldType.split('-')[0];
+  fd.enum.forEach((value, index) => {
+    const label = typeof fd.enumNames?.[index] === 'object' ? fd.enumNames[index].value : fd.enumNames?.[index] || value;
+    const id = getId(fd.name);
+    const field = createRadioOrCheckbox({
+      name: fd.name,
+      id,
+      label: { value: label },
+      fieldType: type,
+      enum: [value],
+      required: fd.required,
+    });
+    field.classList.remove('field-wrapper', `field-${fd.name}`);
+    const input = field.querySelector('input');
+    input.id = id;
+    input.dataset.fieldType = fd.fieldType;
+    input.name = fd.id; // since id is unique across radio/checkbox group
+    input.checked = Array.isArray(fd.value) ? fd.value.includes(value) : value === fd.value;
+    if ((index === 0 && type === 'radio') || type === 'checkbox') {
+      input.required = fd.required;
+    }
+    if (fd.enabled === false || fd.readOnly === true) {
+      input.setAttribute('disabled', 'disabled');
+    }
+    wrapper.appendChild(field);
+  });
+}

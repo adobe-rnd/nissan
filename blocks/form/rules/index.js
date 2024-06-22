@@ -1,6 +1,7 @@
 import { submitSuccess, submitFailure } from '../submit.js';
 import {
   createHelpText, createLabel, updateOrCreateInvalidMsg, getCheckboxGroupValue,
+  createRadioOrCheckboxUsingEnum,
 } from '../util.js';
 import registerCustomFunctions from './functionRegistration.js';
 import { externalize } from './functions.js';
@@ -166,8 +167,17 @@ async function fieldChanged(payload, form, generateFormRendition) {
           updateOrCreateInvalidMsg(field, '');
         }
         break;
+      case 'enum':
+      case 'enumNames':
+        if (fieldType === 'radio-group' || fieldType === 'checkbox-group') {
+          createRadioOrCheckboxUsingEnum(fieldModel, field);
+        }
+        break;
       default:
         break;
+    }
+    if (field?.dataset?.[`${propertyName}Notification`]) {
+      field.dataset[`${propertyName}`] = JSON.stringify(currentValue);
     }
   });
 }
