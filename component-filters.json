@@ -57,7 +57,8 @@
       "form-submit-button",
       "form-reset-button",
       "file-input",
-      "location"
+      "location",
+      "card-selection"
     ]
   }
 ]

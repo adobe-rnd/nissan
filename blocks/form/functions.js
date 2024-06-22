@@ -31,6 +31,114 @@ const powertrainConfigurations = [
   },
 ];
 
+const response = {
+  success: true,
+  source: 'EXTERNAL',
+  modelCode: 'JUKEF16B',
+  dealers: [
+    {
+      dealerId: '051910',
+      name: 'Glyn Hopkin North London (London)',
+      address: {
+        addressLine1: '49-51 Stamford Hill',
+        addressLine2: '',
+        postalCode: 'N16 5TB',
+        city: 'London',
+        state: null,
+      },
+      contact: {
+        phone: '020 3058 3840',
+      },
+      distance: {
+        km: 3.230844048915564,
+        miles: 2.007552797518713,
+      },
+      vehicles: [
+        {
+          modelCode: 'JUKEF16B',
+          vin: 'SJNFCAF16U2001961',
+          modelName: 'JUKE',
+          gradeName: 'Tekna',
+          modelGroupCode: 'F16B',
+          powerTrain: 'Hybrid',
+          transmission: 'Automatic',
+          driveTrain: '2WD',
+        },
+      ],
+      testdriveTypes: [
+        'dealer',
+      ],
+    },
+    {
+      dealerId: '051565',
+      name: 'Glyn Hopkin East London (London)',
+      address: {
+        addressLine1: '1021 Romford Road, Manor Park',
+        addressLine2: '',
+        postalCode: 'E12 5LH',
+        city: 'London',
+        state: null,
+      },
+      contact: {
+        phone: '020 8131 2733',
+      },
+      distance: {
+        km: 6.310120684627629,
+        miles: 3.9209259999277544,
+      },
+      vehicles: [
+        {
+          modelCode: 'JUKEF16B',
+          vin: 'SJNFCAF16U2000109',
+          modelName: 'JUKE',
+          gradeName: 'Tekna',
+          modelGroupCode: 'F16B',
+          powerTrain: 'Hybrid',
+          transmission: 'Automatic',
+          driveTrain: '2WD',
+        },
+      ],
+      testdriveTypes: [
+        'dealer',
+      ],
+    },
+    {
+      dealerId: '051856',
+      name: 'Ancaster Eltham',
+      address: {
+        addressLine1: '43-45 High Street',
+        addressLine2: '',
+        postalCode: 'SE9 1DH',
+        city: 'Eltham',
+        state: null,
+      },
+      contact: {
+        phone: '020 8331 6900',
+      },
+      distance: {
+        km: 7.083106429279261,
+        miles: 4.401236925067684,
+      },
+      vehicles: [
+        {
+          modelCode: 'JUKEF16B',
+          vin: 'SJNFCAF16U2001366',
+          modelName: 'JUKE',
+          gradeName: 'Tekna',
+          modelGroupCode: 'F16B',
+          powerTrain: 'Hybrid',
+          transmission: 'Automatic',
+          driveTrain: '2WD',
+        },
+      ],
+      testdriveTypes: [
+        'dealer',
+      ],
+    },
+  ],
+  alternatePowerTrain: false,
+};
+
 const carModels = [
   {
     id: 'JUKEF16B',
@@ -79,36 +187,6 @@ const powertrainConfigMap = powertrainConfigurations.reduce((acc, powertrain) =>
   acc[powertrain.powertrain] = powertrain;
   return acc;
 }, {});
-
-/**
- * Get Full Name
- * @name getFullName Concats first name and last name
- * @param {string} firstname in Stringformat
- * @param {string} lastname in Stringformat
- * @return {string}
- */
-function getFullName(firstname, lastname) {
-  return `${firstname} ${lastname}`.trim();
-}
-
-/**
- * Calculate the number of days between two dates.
- * @param {*} endDate
- * @param {*} startDate
- * @returns {number} returns the number of days between two dates
- */
-function days(endDate, startDate) {
-  const start = typeof startDate === 'string' ? new Date(startDate) : startDate;
-  const end = typeof endDate === 'string' ? new Date(endDate) : endDate;
-
-  // return zero if dates are valid
-  if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) {
-    return 0;
-  }
-
-  const diffInMs = Math.abs(end.getTime() - start.getTime());
-  return Math.floor(diffInMs / (1000 * 60 * 60 * 24));
-}
 
 /**
  * Populates the image choice component with the given options
@@ -165,9 +243,20 @@ function populateSelectedModel(chooseModel, imageField, modelName, powerTrainFie
  * @param {scope} globals
  */
 function populateDealership(chooseModel, location, dealershipField, globals) {
+  const dealers = response.dealers?.map((dealer) => ({
+    name: dealer.name,
+    address: `${dealer.address.addressLine1}, ${dealer.address.city}, ${dealer.address.postalCode}`,
+    phone: dealer.contact.phone,
+    distance: dealer.distance.km,
+    testdriveTypes: dealer.testdriveTypes,
+  }));
+  globals.functions.setProperty(
+    dealershipField,
+    { value: dealers },
+  );
 }
 
 // eslint-disable-next-line import/prefer-default-export
 export {
-  getFullName, days, populateImageChoice, populateSelectedModel, populateDealership,
+  populateImageChoice, populateSelectedModel, populateDealership,
 };
