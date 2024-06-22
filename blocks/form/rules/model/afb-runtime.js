@@ -2125,7 +2125,7 @@ class Container extends Scriptable {
             const items2Remove = Math.min(itemsLength - dataLength, itemsLength - minItems);
             while (items2Add > 0) {
                 items2Add--;
-                const child = this._addChild(this._itemTemplate);
+                const child = this._addChild(this._itemTemplate, this.items.length, true);
                 child._initialize('create');
                 result.added.push(child);
             }
@@ -3407,20 +3407,18 @@ class Fieldset extends Container {
             const dataGroup = new DataGroup(this._data?.$_name, v, this._data?.$_type, this._data?.parent);
             this._data?.parent?.$addDataNode(dataGroup.name, dataGroup, true);
             this._data = dataGroup;
-            const currentLength = this.items.length;
             const result = this.syncDataAndFormModel(dataGroup);
             const newLength = this.items.length;
             result.added.forEach((item) => {
                 this.notifyDependents(propertyChange('items', item.getState(), null));
                 item.dispatch(new Initialize());
-                item.dispatch(new ExecuteRule());
             });
+            for (let i = 0; i < newLength; i += 1) {
+                this._children[i].dispatch(new ExecuteRule());
+            }
             result.removed.forEach((item) => {
                 this.notifyDependents(propertyChange('items', null, item.getState()));
             });
-            for (let i = currentLength; i < newLength; i += 1) {
-                this._children[i].dispatch(new ExecuteRule());
-            }
         }
     }
     get fieldType() {
