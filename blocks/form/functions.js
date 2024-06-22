@@ -165,7 +165,6 @@ function populateSelectedModel(chooseModel, imageField, modelName, powerTrainFie
  * @param {scope} globals
  */
 function populateDealership(chooseModel, location, dealershipField, globals) {
-
 }
 
 // eslint-disable-next-line import/prefer-default-export
