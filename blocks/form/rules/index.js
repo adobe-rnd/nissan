@@ -1,6 +1,8 @@
 import { submitSuccess, submitFailure } from '../submit.js';
 import {
   createHelpText, createLabel, updateOrCreateInvalidMsg, getCheckboxGroupValue,
+  createRadioOrCheckboxGroup,
+  addOptions,
 } from '../util.js';
 import registerCustomFunctions from './functionRegistration.js';
 import { externalize } from './functions.js';
@@ -164,6 +166,19 @@ async function fieldChanged(payload, form, generateFormRendition) {
       case 'valid':
         if (currentValue === true) {
           updateOrCreateInvalidMsg(field, '');
+        }
+        break;
+      case 'enum':
+      case 'enumNames':
+        if (fieldType === 'radio-group' || fieldType === 'checkbox-group') {
+          const wrapper = createRadioOrCheckboxGroup(fieldModel);
+          field.replaceWith(wrapper);
+        }
+        if (fieldType === 'drop-down') {
+          const select = field.querySelector('select');
+          if (select) {
+            addOptions(fieldModel, select);
+          }
         }
         break;
       default:
