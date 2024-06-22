@@ -18,7 +18,7 @@
 * the terms of the Adobe license agreement accompanying it.
 *************************************************************************/
 
-import { propertyChange, ExecuteRule, Initialize, RemoveItem, Change, FormLoad, FieldChanged, ValidationComplete, Valid, Invalid, SubmitSuccess, CustomEvent, SubmitError, SubmitFailure, Submit, Save, Reset, RemoveInstance, AddInstance, AddItem, Click } from './afb-events.js';
+import { E as EventSource, p as propertyChange, a as ExecuteRule, I as Initialize, R as RemoveItem, C as Change, F as FormLoad, b as FocusOption, c as FieldChanged, V as ValidationComplete, d as constraintKeys, g as getConstraintTypeMessages, e as Valid, f as Invalid, h as ValidationError, S as SubmitSuccess, i as CustomEvent, j as SubmitError, k as SubmitFailure, l as CaptchaDisplayMode, m as Submit, n as Save, o as Reset, q as RemoveInstance, A as AddInstance, r as AddItem, s as Click } from './Events-a66f7a2c-aea0619d.js';
 import Formula from '../formula/index.js';
 import { format, parseDefaultDate, datetimeToNumber, parseDateSkeleton, formatDate, numberToDatetime } from './afb-formatters.min.js';
 
@@ -28,77 +28,6 @@ function __decorate(decorators, target, key, desc) {
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 }
-const ConstraintType = Object.freeze({
-    PATTERN_MISMATCH: 'patternMismatch',
-    TOO_SHORT: 'tooShort',
-    TOO_LONG: 'tooLong',
-    RANGE_OVERFLOW: 'rangeOverflow',
-    RANGE_UNDERFLOW: 'rangeUnderflow',
-    TYPE_MISMATCH: 'typeMismatch',
-    VALUE_MISSING: 'valueMissing',
-    STEP_MISMATCH: 'stepMismatch',
-    FORMAT_MISMATCH: 'formatMismatch',
-    ACCEPT_MISMATCH: 'acceptMismatch',
-    FILE_SIZE_MISMATCH: 'fileSizeMismatch',
-    UNIQUE_ITEMS_MISMATCH: 'uniqueItemsMismatch',
-    MIN_ITEMS_MISMATCH: 'minItemsMismatch',
-    MAX_ITEMS_MISMATCH: 'maxItemsMismatch',
-    EXPRESSION_MISMATCH: 'expressionMismatch'
-});
-const constraintKeys = Object.freeze({
-    pattern: ConstraintType.PATTERN_MISMATCH,
-    minLength: ConstraintType.TOO_SHORT,
-    maxLength: ConstraintType.TOO_LONG,
-    maximum: ConstraintType.RANGE_OVERFLOW,
-    minimum: ConstraintType.RANGE_UNDERFLOW,
-    type: ConstraintType.TYPE_MISMATCH,
-    required: ConstraintType.VALUE_MISSING,
-    step: ConstraintType.STEP_MISMATCH,
-    format: ConstraintType.FORMAT_MISMATCH,
-    accept: ConstraintType.ACCEPT_MISMATCH,
-    maxFileSize: ConstraintType.FILE_SIZE_MISMATCH,
-    uniqueItems: ConstraintType.UNIQUE_ITEMS_MISMATCH,
-    minItems: ConstraintType.MIN_ITEMS_MISMATCH,
-    maxItems: ConstraintType.MAX_ITEMS_MISMATCH,
-    validationExpression: ConstraintType.EXPRESSION_MISMATCH
-});
-const defaultConstraintTypeMessages = Object.freeze({
-    [ConstraintType.PATTERN_MISMATCH]: 'Please match the format requested.',
-    [ConstraintType.TOO_SHORT]: 'Please lengthen this text to ${0} characters or more.',
-    [ConstraintType.TOO_LONG]: 'Please shorten this text to ${0} characters or less.',
-    [ConstraintType.RANGE_OVERFLOW]: 'Value must be less than or equal to ${0}.',
-    [ConstraintType.RANGE_UNDERFLOW]: 'Value must be greater than or equal to ${0}.',
-    [ConstraintType.TYPE_MISMATCH]: 'Please enter a valid value.',
-    [ConstraintType.VALUE_MISSING]: 'Please fill in this field.',
-    [ConstraintType.STEP_MISMATCH]: 'Please enter a valid value.',
-    [ConstraintType.FORMAT_MISMATCH]: 'Specify the value in allowed format : ${0}.',
-    [ConstraintType.ACCEPT_MISMATCH]: 'The specified file type not supported.',
-    [ConstraintType.FILE_SIZE_MISMATCH]: 'File too large. Reduce size and try again.',
-    [ConstraintType.UNIQUE_ITEMS_MISMATCH]: 'All the items must be unique.',
-    [ConstraintType.MIN_ITEMS_MISMATCH]: 'Specify a number of items equal to or greater than ${0}.',
-    [ConstraintType.MAX_ITEMS_MISMATCH]: 'Specify a number of items equal to or less than ${0}.',
-    [ConstraintType.EXPRESSION_MISMATCH]: 'Please enter a valid value.'
-});
-let customConstraintTypeMessages = {};
-const getConstraintTypeMessages = () => {
-    return {
-        ...defaultConstraintTypeMessages,
-        ...customConstraintTypeMessages
-    };
-};
-class ValidationError {
-    fieldName;
-    errorMessages;
-    constructor(fieldName = '', errorMessages = []) {
-        this.errorMessages = errorMessages;
-        this.fieldName = fieldName;
-    }
-}
-var FocusOption;
-(function (FocusOption) {
-    FocusOption["NEXT_ITEM"] = "nextItem";
-    FocusOption["PREVIOUS_ITEM"] = "previousItem";
-})(FocusOption || (FocusOption = {}));
 const objToMap = (o) => new Map(Object.entries(o));
 const stringViewTypes = objToMap({ 'date': 'date-input', 'data-url': 'file-input', 'binary': 'file-input' });
 const typeToViewTypes = objToMap({
@@ -202,10 +131,12 @@ class DataValue {
     $_value;
     $_type;
     $_fields = [];
-    constructor($_name, $_value, $_type = typeof $_value) {
+    parent;
+    constructor($_name, $_value, $_type = typeof $_value, parent) {
         this.$_name = $_name;
         this.$_value = $_value;
         this.$_type = $_type;
+        this.parent = parent;
     }
     valueOf() {
         return this.$_value;
@@ -272,25 +203,25 @@ class NullDataValueClass extends DataValue {
 const NullDataValue = new NullDataValueClass();
 class DataGroup extends DataValue {
     $_items;
-    createEntry(key, value) {
-        const t = value instanceof Array ? 'array' : typeof value;
+    createEntry(key, value, parent) {
+        const t = Array.isArray(value) ? 'array' : typeof value;
         if (typeof value === 'object' && value != null) {
-            return new DataGroup(key, value, t);
+            return new DataGroup(key, value, t, parent);
         }
         else {
-            return new DataValue(key, value, t);
+            return new DataValue(key, value, t, parent);
         }
     }
-    constructor(_name, _value, _type = typeof _value) {
-        super(_name, _value, _type);
+    constructor(_name, _value, _type = typeof _value, parent) {
+        super(_name, _value, _type, parent);
         if (_value instanceof Array) {
             this.$_items = _value.map((value, index) => {
-                return this.createEntry(index, value);
+                return this.createEntry(index, value, this);
             });
         }
         else {
             this.$_items = Object.fromEntries(Object.entries(_value).map(([key, value]) => {
-                return [key, this.createEntry(key, value)];
+                return [key, this.createEntry(key, value, this)];
             }));
         }
     }
@@ -312,7 +243,7 @@ class DataGroup extends DataValue {
         return Object.entries(this.$_items).length;
     }
     $convertToDataValue() {
-        return new DataValue(this.$name, this.$value, this.$type);
+        return new DataValue(this.$name, this.$value, this.$type, this.parent);
     }
     $addDataNode(name, value, override = false) {
         if (value !== NullDataValue) {
@@ -328,6 +259,7 @@ class DataGroup extends DataValue {
             else {
                 this.$_items[name] = value;
             }
+            value.parent = this;
         }
     }
     $removeDataNode(name) {
@@ -602,6 +534,9 @@ class FileObject {
     }
     get type() {
         return this.mediaType;
+    }
+    set type(type) {
+        this.mediaType = type;
     }
     toJSON() {
         return {
@@ -1221,6 +1156,7 @@ class BaseNode {
     _dependents = [];
     _jsonModel;
     _tokens = [];
+    _eventSource = EventSource.CODE;
     get isContainer() {
         return false;
     }
@@ -2176,6 +2112,10 @@ class Container extends Scriptable {
         this.syncDataAndFormModel(dataNode);
     }
     syncDataAndFormModel(contextualDataModel) {
+        const result = {
+            added: [],
+            removed: []
+        };
         if (contextualDataModel?.$type === 'array' && this._itemTemplate != null) {
             const dataLength = contextualDataModel?.$value.length;
             const itemsLength = this._children.length;
@@ -2187,17 +2127,19 @@ class Container extends Scriptable {
                 items2Add--;
                 const child = this._addChild(this._itemTemplate);
                 child._initialize('create');
+                result.added.push(child);
             }
             if (items2Remove > 0) {
                 this._children.splice(dataLength, items2Remove);
                 for (let i = 0; i < items2Remove; i++) {
-                    this._childrenReference.pop();
+                    result.removed.push(this._childrenReference.pop());
                 }
             }
         }
         this._children.forEach(x => {
             x.importData(contextualDataModel);
         });
+        return result;
     }
     get activeChild() {
         return this._activeChild;
@@ -2552,6 +2494,24 @@ const urlEncoded = (data) => {
     });
     return formData;
 };
+const submit = async (context, success, error, submitAs = 'multipart/form-data', input_data = null, action = '', metadata = null) => {
+    const endpoint = action || context.form.action;
+    let data = input_data;
+    if (typeof data != 'object' || data == null) {
+        data = context.form.exportData();
+    }
+    const attachments = getAttachments(context.form, true);
+    let submitContentType = submitAs;
+    const submitDataAndMetaData = { 'data': data, ...metadata };
+    let formData = submitDataAndMetaData;
+    if (Object.keys(attachments).length > 0 || submitAs === 'multipart/form-data') {
+        formData = multipartFormData(submitDataAndMetaData, attachments);
+        submitContentType = 'multipart/form-data';
+    }
+    await request(context, endpoint, 'POST', formData, success, error, {
+        'Content-Type': submitContentType
+    });
+};
 const multipartFormData = (data, attachments) => {
     const formData = new FormData();
     Object.entries(data).forEach(([key, value]) => {
@@ -2583,24 +2543,6 @@ const multipartFormData = (data, attachments) => {
         }, []);
     }
     return formData;
-};
-const submit = async (context, success, error, submitAs = 'multipart/form-data', input_data = null, action = '', metadata = null) => {
-    const endpoint = action || context.form.action;
-    let data = input_data;
-    if (typeof data != 'object' || data == null) {
-        data = context.form.exportData();
-    }
-    const attachments = getAttachments(context.form, true);
-    let submitContentType = submitAs;
-    const submitDataAndMetaData = { 'data': data, ...metadata };
-    let formData = submitDataAndMetaData;
-    if (Object.keys(attachments).length > 0 || submitAs === 'multipart/form-data') {
-        formData = multipartFormData(submitDataAndMetaData, attachments);
-        submitContentType = 'multipart/form-data';
-    }
-    await request(context, endpoint, 'POST', formData, success, error, {
-        'Content-Type': submitContentType
-    });
 };
 const createAction = (name, payload = {}) => {
     switch (name) {
@@ -2698,6 +2640,21 @@ class FunctionRuntimeImpl {
                                 dispatchEvent: (target, eventName, payload) => {
                                     const args = [target, eventName, payload];
                                     return FunctionRuntimeImpl.getInstance().getFunctions().dispatchEvent._func.call(undefined, args, data, interpreter);
+                                },
+                                getFiles: (qualifiedName) => {
+                                    const filesMap = {};
+                                    if (!qualifiedName) {
+                                        interpreter.globals.form.visit(function callback(f) {
+                                            if (f.fieldType === 'file-input' && f.value) {
+                                                filesMap[f.qualifiedName] = f.serialize();
+                                            }
+                                        });
+                                    }
+                                    const field = interpreter.globals.form.resolveQualifiedName(qualifiedName);
+                                    if (field?.fieldType === 'file-input' && field?.value) {
+                                        filesMap[qualifiedName] = field.serialize();
+                                    }
+                                    return filesMap;
                                 }
                             }
                         };
@@ -2798,7 +2755,7 @@ class FunctionRuntimeImpl {
                 _signature: []
             },
             submitForm: {
-                _func: (args, data, interpreter) => {
+                _func: async (args, data, interpreter) => {
                     let success = null;
                     let error = null;
                     let submit_data;
@@ -2816,6 +2773,24 @@ class FunctionRuntimeImpl {
                         submit_as = args.length > 2 ? toString(args[2]) : 'multipart/form-data';
                         submit_data = args.length > 3 ? valueOf(args[3]) : null;
                         validate_form = args.length > 4 ? valueOf(args[4]) : true;
+                    }
+                    const form = interpreter.globals.form;
+                    if (form.captcha && (form.captcha.captchaDisplayMode === CaptchaDisplayMode.INVISIBLE ||
+                        (form.captcha.properties['fd:captcha']?.config?.version === 'enterprise' && form.captcha.properties['fd:captcha']?.config?.keyType === 'score'))) {
+                        if (typeof interpreter.runtime.functionTable.fetchCaptchaToken?._func !== 'function') {
+                            interpreter.globals.form.logger.error('fetchCaptchaToken is not defined');
+                            interpreter.globals.form.dispatch(new SubmitError({ type: 'FetchCaptchaTokenNotDefined' }));
+                            return {};
+                        }
+                        try {
+                            const token = await interpreter.runtime.functionTable.fetchCaptchaToken._func([], data, interpreter);
+                            form.captcha.value = token;
+                        }
+                        catch (e) {
+                            interpreter.globals.form.logger.error('Error while fetching captcha token');
+                            interpreter.globals.form.dispatch(new SubmitError({ type: 'FetchCaptchaTokenFailed' }));
+                            return {};
+                        }
                     }
                     interpreter.globals.form.dispatch(new Submit({
                         success,
@@ -2978,6 +2953,7 @@ class Form extends Container {
     _fields = {};
     _ids;
     _invalidFields = [];
+    _captcha = null;
     constructor(n, fieldFactory, _ruleEngine, _eventQueue = new EventQueue(), logLevel = 'off', mode = 'create') {
         super(n, { fieldFactory: fieldFactory, mode });
         this._ruleEngine = _ruleEngine;
@@ -3078,7 +3054,7 @@ class Form extends Container {
         const options = {
             lang: this.lang,
             captchaInfo: captchaInfoObj,
-            additionalSubmitMetadata: { ...this.additionalSubmitMetadata }
+            ...this.additionalSubmitMetadata
         };
         return new SubmitMetaData(options);
     }
@@ -3181,6 +3157,9 @@ class Form extends Container {
         return this._ids.next().value;
     }
     fieldAdded(field) {
+        if (field.fieldType === 'captcha' && !this._captcha) {
+            this._captcha = field;
+        }
         this._fields[field.id] = field;
         field.subscribe((action) => {
             if (this._invalidFields.indexOf(action.target.id) === -1) {
@@ -3214,7 +3193,7 @@ class Form extends Container {
                         prevValue: shallowClone(prevValue)
                     };
                 });
-                const fieldChangedAction = new FieldChanged(changes, field);
+                const fieldChangedAction = new FieldChanged(changes, field, action.payload.eventSource);
                 this.notifyDependents(fieldChangedAction);
             }
         });
@@ -3311,6 +3290,9 @@ class Form extends Container {
     }
     get title() {
         return this._jsonModel.title || '';
+    }
+    get captcha() {
+        return this._captcha;
     }
 }
 function stringToNumber(str, language) {
@@ -3418,7 +3400,28 @@ class Fieldset extends Container {
         return super.items ? super.items : [];
     }
     get value() {
-        return null;
+        return this.getDataNode()?.$value;
+    }
+    set value(v) {
+        if (typeof this.name === 'string' && this.type === 'array') {
+            const dataGroup = new DataGroup(this._data?.$_name, v, this._data?.$_type, this._data?.parent);
+            this._data?.parent?.$addDataNode(dataGroup.name, dataGroup, true);
+            this._data = dataGroup;
+            const currentLength = this.items.length;
+            const result = this.syncDataAndFormModel(dataGroup);
+            const newLength = this.items.length;
+            result.added.forEach((item) => {
+                this.notifyDependents(propertyChange('items', item.getState(), null));
+                item.dispatch(new Initialize());
+                item.dispatch(new ExecuteRule());
+            });
+            result.removed.forEach((item) => {
+                this.notifyDependents(propertyChange('items', null, item.getState()));
+            });
+            for (let i = currentLength; i < newLength; i += 1) {
+                this._children[i].dispatch(new ExecuteRule());
+            }
+        }
     }
     get fieldType() {
         return 'panel';
@@ -3530,6 +3533,9 @@ class Field extends Scriptable {
         }
         if (['plain-text', 'image'].indexOf(this.fieldType) === -1) {
             this._jsonModel.value = undefined;
+        }
+        else {
+            this._jsonModel.default = this._jsonModel.default || this._jsonModel.value;
         }
         const value = this._jsonModel.value;
         if (value === undefined) {
@@ -3805,7 +3811,7 @@ class Field extends Scriptable {
             if (updates.valid) {
                 this.triggerValidationEvent(updates);
             }
-            const changeAction = new Change({ changes: changes.concat(Object.values(updates)) });
+            const changeAction = new Change({ changes: changes.concat(Object.values(updates)), eventSource: this._eventSource });
             this.dispatch(changeAction);
         }
     }
@@ -4273,7 +4279,7 @@ class FileUpload extends Field {
         }
         return dataNodeValue;
     }
-    async _serialize() {
+    async serialize() {
         const val = this._jsonModel.value;
         if (val === undefined) {
             return null;
@@ -4435,8 +4441,29 @@ class EmailInput extends Field {
     }
 }
 class Captcha extends Field {
+    _captchaDisplayMode;
+    _captchaProvider;
+    _captchaSiteKey;
+    constructor(params, _options) {
+        super(params, _options);
+        this._captchaDisplayMode = params.captchaDisplayMode;
+        this._captchaProvider = params.captchaProvider;
+        this._captchaSiteKey = params.siteKey;
+    }
     getDataNode() {
         return undefined;
+    }
+    custom_setProperty(action) {
+        this.applyUpdates(action.payload);
+    }
+    get captchaDisplayMode() {
+        return this._captchaDisplayMode;
+    }
+    get captchaProvider() {
+        return this._captchaProvider;
+    }
+    get captchaSiteKey() {
+        return this._captchaSiteKey;
     }
 }
 class Button extends Field {
@@ -4486,7 +4513,10 @@ class FormFieldFactoryImpl {
                     fieldType: child.fieldType,
                     type: 'array',
                     name: child.name,
-                    dataRef: child.dataRef
+                    dataRef: child.dataRef,
+                    events: {
+                        'custom:setProperty': '$event.payload'
+                    }
                 },
                 ...{
                     'items': [newChild]

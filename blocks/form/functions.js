@@ -167,7 +167,7 @@ function populateSelectedModel(chooseModel, imageField, modelName, powerTrainFie
 function populateDealership(chooseModel, location, dealershipField, globals) {
   globals.functions.setProperty(
     dealershipField,
-    { value: [{ dealerAddress: 'Twst', dealerAddress1: 'Test' }] },
+    { value: [{ dealerAddress: 'Twst', dealerAddress1: 'Test' }, { dealerAddress: 'Twst1', dealerAddress1: 'Test 1' }] },
   );
 }
 
