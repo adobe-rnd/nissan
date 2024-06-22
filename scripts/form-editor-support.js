@@ -92,6 +92,12 @@ function annotateItems(items, formDefinition, formFieldMap) {
           fieldWrapper.setAttribute('data-aue-type', 'container');
           fieldWrapper.setAttribute('data-aue-behavior', 'component');
           annotateItems(fieldWrapper.childNodes, formDefinition, formFieldMap);
+          if (fieldWrapper.classList.contains('repeatable')) {
+            const repeatableFieldWrapper = fieldWrapper.querySelector("[data-repeatable='true']");
+            annotateItems(repeatableFieldWrapper.childNodes, formDefinition, formFieldMap);
+          } else {
+            annotateItems(fieldWrapper.childNodes, formDefinition, formFieldMap);
+          }
         }
       }
     }
