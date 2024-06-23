@@ -243,16 +243,9 @@ function populateSelectedModel(chooseModel, imageField, modelName, powerTrainFie
  * @param {scope} globals
  */
 function populateDealership(chooseModel, location, dealershipField, globals) {
-  const dealers = response.dealers?.map((dealer) => ({
-    name: dealer.name,
-    address: `${dealer.address.addressLine1}, ${dealer.address.city}, ${dealer.address.postalCode}`,
-    phone: dealer.contact.phone,
-    distance: dealer.distance.km,
-    testdriveTypes: dealer.testdriveTypes,
-  }));
   globals.functions.setProperty(
     dealershipField,
-    { value: dealers },
+    { value: response.dealers },
   );
 }
 
