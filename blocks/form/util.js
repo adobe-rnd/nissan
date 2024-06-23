@@ -313,3 +313,31 @@ export function createRadioOrCheckboxUsingEnum(fd, wrapper) {
     wrapper.appendChild(field);
   });
 }
+
+export function subscribe(fieldDiv, keys, callback) {
+  if (keys && callback) {
+    keys.forEach((key) => {
+      fieldDiv.dataset[`${key}Notification`] = true;
+    });
+
+    const observer = new MutationObserver((mutationsList) => {
+      const newField = {};
+      let updateRequired = false;
+      mutationsList?.forEach((mutation) => {
+        if (mutation.type === 'attributes' && mutation.attributeName.startsWith('data-')) {
+          let key = mutation.attributeName.replace('data-', '');
+          key = key.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+          if (keys.includes(key)) {
+            updateRequired = true;
+            newField[key] = JSON.parse(fieldDiv.dataset[key]);
+          }
+        }
+      });
+      if (callback && updateRequired) {
+        callback(fieldDiv, newField);
+      }
+    });
+
+    observer.observe(fieldDiv, { attributes: true });
+  }
+}

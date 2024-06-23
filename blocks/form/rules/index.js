@@ -40,15 +40,18 @@ async function fieldChanged(payload, form, generateFormRendition) {
     } = fieldModel;
     const { propertyName, currentValue, prevValue } = change;
     const field = form.querySelector(`#${id}`);
+    const fieldWrapper = field?.closest('.field-wrapper');
     if (!field) {
       return;
     }
     switch (propertyName) {
       case 'required':
-        if (currentValue === true) {
-          field.closest('.field-wrapper').dataset.required = '';
-        } else {
-          field.closest('.field-wrapper').removeAttribute('data-required');
+        if (fieldWrapper) {
+          if (currentValue === true) {
+            fieldWrapper.dataset.required = '';
+          } else {
+            fieldWrapper.removeAttribute('data-required');
+          }
         }
         break;
       case 'validationMessage':
@@ -88,7 +91,7 @@ async function fieldChanged(payload, form, generateFormRendition) {
         }
         break;
       case 'visible':
-        field.closest('.field-wrapper').dataset.visible = currentValue;
+        if (fieldWrapper) fieldWrapper.dataset.visible = currentValue;
         break;
       case 'enabled':
         // If checkboxgroup/radiogroup/drop-down is readOnly then it should remain disabled.
@@ -119,7 +122,6 @@ async function fieldChanged(payload, form, generateFormRendition) {
         break;
       case 'label':
         // eslint-disable-next-line no-case-declarations
-        const fieldWrapper = field.closest('.field-wrapper');
         if (fieldWrapper) {
           let labelEl = fieldWrapper.querySelector('.field-label');
           if (labelEl) {
@@ -137,10 +139,8 @@ async function fieldChanged(payload, form, generateFormRendition) {
         }
         break;
       case 'description':
-        // eslint-disable-next-line no-case-declarations
-        const fieldContainer = field.closest('.field-wrapper');
-        if (fieldContainer) {
-          let descriptionEl = fieldContainer.querySelector('.field-description');
+        if (fieldWrapper) {
+          let descriptionEl = fieldWrapper.querySelector('.field-description');
           if (descriptionEl) {
             descriptionEl.innerHTML = currentValue;
           } else if (currentValue !== '') {
@@ -148,7 +148,7 @@ async function fieldChanged(payload, form, generateFormRendition) {
               id,
               description: currentValue,
             });
-            fieldContainer.append(descriptionEl);
+            fieldWrapper.append(descriptionEl);
           }
         }
         break;
@@ -176,8 +176,8 @@ async function fieldChanged(payload, form, generateFormRendition) {
       default:
         break;
     }
-    if (field?.dataset?.[`${propertyName}Notification`]) {
-      field.dataset[`${propertyName}`] = JSON.stringify(currentValue);
+    if (fieldWrapper?.dataset?.[`${propertyName}Notification`]) {
+      fieldWrapper.dataset[`${propertyName}`] = JSON.stringify(currentValue);
     }
   });
 }
