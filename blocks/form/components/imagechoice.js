@@ -34,7 +34,7 @@ export default async function decorate(fieldDiv, field) {
       source.srcset = model.source;
       picture.appendChild(source);
       const img = document.createElement('img');
-      img.alt = model.name;
+      img.alt = `Image for car model ${model.name}`;
       img.src = model.source;
       picture.appendChild(img);
       li.appendChild(picture);
