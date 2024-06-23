@@ -2,6 +2,7 @@ const customComponent = {
   datetime: './components/datetime.js',
   location: './components/location.js',
   'card-selection': './components/card.js',
+  dealer: './components/dealer.js',
 };
 
 /**
