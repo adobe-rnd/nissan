@@ -15,9 +15,9 @@ function updateView(fieldDiv, field) {
     } = field?.value || {};
     const template = `
           <div class="dealer-details">
-              <p class="dealer-name">${name}</p>
-              <p class="dealer-list-phone"><a class="dealer-list-phone-link" href="tel:${phone}">${phone}</a></p>
-              <p class="address">${addressLine1}<br>${city}</p>
+              <p class="dealer-name">${name || 'Dealer Name'}</p>
+              <p class="dealer-list-phone"><a class="dealer-list-phone-link" href="tel:${phone}">${phone || '012 3456 7890'}</a></p>
+              <p class="address">${addressLine1 || 'Address'}<br>${city || 'City'}</p>
               <p class="distance">(20.4 miles)</p>
           </div>`;
     removeDealerDetails();
