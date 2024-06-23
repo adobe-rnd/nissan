@@ -153,7 +153,7 @@ async function populateDealership(model, location, powerTrain, list, dealerPanel
       );
       globals.functions.setProperty(
         dealerPanel,
-        { label: `Showing ${dealers.length} dealerships` },
+        { label: { value: `Showing ${dealers.length} dealerships` } },
       );
 
       const name = carModelsMap[model] ? carModelsMap[model].name : '';

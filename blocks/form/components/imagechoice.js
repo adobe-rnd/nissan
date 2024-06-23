@@ -45,10 +45,6 @@ export default async function decorate(fieldDiv, field) {
       label.textContent = model.name;
       li.appendChild(label);
 
-      const span = document.createElement('span');
-      span.className = 'black-border';
-      li.appendChild(span);
-
       ul.appendChild(li);
     });
   }

@@ -1,19 +1,27 @@
 import { subscribe } from '../util.js';
 
 function getLabel(enumValues, enumNames, index) {
-  let title = enumValues?.[index];
-  let description = enumNames?.[index] || enumValues?.[index];
+  const title = enumValues?.[index];
+  const description = enumNames?.[index] || enumValues?.[index];
+  let template = `<div class="card-details">
+                        <div class="title">${title}</div>
+                        <div class="desc">${description}</div>
+                    </div>`;
+
   if (typeof enumValues[index] === 'object') {
     const {
       modelCode, gradeName, powerTrain, driveTrain, transmission,
     } = enumValues[index] || {};
-    title = `${modelCode} ${gradeName}`;
-    description = `${powerTrain} ${driveTrain} ${transmission}`;
+
+    template = `<div class="card-details">
+                  <span class="title">${modelCode} ${gradeName}</span>
+                  <div class="model-details">
+                          <span>${powerTrain}</span>
+                          <span class="icon-before-chassis">${driveTrain}</span>
+                          <span class="icon-before-automatic">${transmission}</span>
+                  </div>
+              </div>`;
   }
-  const template = `<div class="card-details">
-                        <div>${title}</div>
-                        <div>${description}</div>
-                    </div>`;
 
   return template;
 }

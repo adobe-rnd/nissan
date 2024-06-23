@@ -1,0 +1,199 @@
+.section .default-content-wrapper {
+    text-align: center;
+    padding: .6em;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.section .default-content-wrapper h3::after {
+    border: none;
+}
+
+.image-choice-container {
+    padding: 0;
+    display: grid;
+    gap: 40px 32px;
+    grid-template-columns: repeat(3, 1fr);
+    list-style-type: none;
+}
+
+.model-list-wrapper {
+    margin: 0;
+    list-style-type: none;
+    display: contents;
+}
+
+.model-block {
+    position: relative;
+    cursor: pointer
+}
+
+.model-block::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    left: 0;
+    bottom: 0;
+    border-bottom: 2px solid #ccc;
+}
+
+.model-block:focus-visible {
+    outline: none;
+}
+.model-radio {
+    height: 100%;
+    padding: 0;
+    width: 100%;
+    position: absolute;
+    appearance: none;
+    cursor: pointer;
+}
+
+.model-radio:hover {
+    border: none;
+}
+
+.model-radio:focus {
+    box-shadow: 0 0 0 4px #5485f0;
+    border-radius: 4px;
+    outline: 0;
+}
+
+.model-block::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    left: 0;
+    bottom: 0;
+}
+
+main .form .model-block > label {
+    display: block;
+    letter-spacing: 1.5px;
+    padding: 12px 0 24px;
+    color: #000;
+    margin: 0;
+}
+.model-block:hover::before {
+    border-bottom: 4px solid #000;
+}
+
+.model-name {
+    display: block;
+    font: 20px / 26px "Nissan Regular", "Nissan Light", Verdana, Arial, sans-serif;
+    letter-spacing: 1.5px;
+    padding: 12px 0 24px;
+    color: #000;
+    margin: 0;
+}
+
+.radio-wrapper .card-details {
+    border: 1px solid;
+    margin-bottom: 20px;
+    padding: 20px;
+    line-height: 26px;
+    letter-spacing: .9px;
+}
+
+input[type="radio"]:checked + label > .card-details {
+    border: 3px solid;
+}
+
+main .form .dealer-details {
+    padding: 20px 0;
+}
+
+main .form .dealer-list-phone {
+    margin: 12px 0 0;
+}
+
+main .form .dealer-list-phone-link {
+    color: #000;
+    text-decoration: none;
+}
+
+main .form .dealer-list-phone-link::before {
+    content: "\260E";
+    padding-right: 7px;
+    position: relative;
+    top: 2px;
+    font-size: 20px;
+}
+
+main .form .dealer-details .dealer-name {
+    font-size: 16px;
+    line-height: 26px;
+    letter-spacing: .9px;
+}
+main .form .dealer-details .address {
+    font-size: 14px;
+    line-height: calc(24 / 14);
+    margin: 12px 0 0;
+}
+
+main .form .dealer-details .distance {
+    font-size: 14px;
+    line-height: 24px;
+    margin: 12px 0 0;
+    text-transform: uppercase;
+}
+
+main .form .item-add {
+    display: none;
+}
+
+main .form form .field-changedealership button,
+main .form form .field-changemodel button {
+    font-size: 14px;
+    line-height: 24px;
+    letter-spacing: .9px;
+    margin-top: 12px;
+    padding: 0;
+    color: #000;
+    background: 0 0 !important;
+    text-align: left;
+    min-height: auto;
+    display: block;
+    border: none;
+    text-decoration: underline;
+    text-transform: none;
+    display: inline-block;
+    margin-bottom: 30px;
+}
+
+main .form form .field-changedealership button::before,
+main .form form .field-changemodel button::before {
+    content: "\270E";
+    font-size: 16px;
+    text-decoration: none;
+    margin: 5px;
+}
+
+
+main .form form .field-changedealership button:hover,
+main .form form .field-changemodel button:hover {
+    color: #4c4c4c;
+}
+
+
+.card-details .title {
+    letter-spacing: 1.5px;
+    padding-bottom: 12px;
+    display: block;
+    font-size: 20px;
+    line-height: 26px;
+}
+
+.card-details .more-details span {
+    font-size: 20px;
+    line-height: 16px;
+    letter-spacing: .9px;
+    margin-right: 16px;
+}
+
+icon-before-chassis::before {
+    
+}
