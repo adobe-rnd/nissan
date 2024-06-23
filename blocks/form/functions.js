@@ -184,7 +184,47 @@ function populateVehicleDetails(dealer, vehicle, globals) {
   );
 }
 
+function submitSuccesss() {
+  window.parent.location.href = 'https://main--nissanleaf--adobehols.hlx.live/thank-you-testdrive-booked';
+}
+
+function submitFailure(response, error) {
+  if (response) console.log(`Submission failed with ${response.status} error code`, response.statusText);
+  if (error) console.log('Submission failed with error', error);
+}
+
+/**
+ * Submit the form
+ * @param {string} Http endpoint to submit.
+ * @param {scope} globals
+ */
+function submitToRestEndpoint(url, globals) {
+  const form = document.querySelector('form');
+  const valid = form.checkValidity();
+  if (valid) {
+    const data = globals.functions.exportData();
+    fetch(url, {
+      method: 'POST',
+      body: JSON.stringify({ data }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          submitSuccesss();
+        } else {
+          submitFailure(response);
+        }
+      })
+      .catch(() => {
+        submitFailure(null, form);
+      });
+  }
+}
+
 // eslint-disable-next-line import/prefer-default-export
 export {
   populateImageChoice, populateSelectedModel, populateDealership, populateVehicleDetails,
+  submitToRestEndpoint,
 };
