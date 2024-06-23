@@ -128,6 +128,25 @@
           }
         },
         {
+          "title": "Dealer Details",
+          "id": "dealer",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/fd/components/form/textinput/v1/textinput",
+                "template": {
+                  "jcr:title": "",
+                  "fieldType": "text-input",
+                  "fd:viewType": "dealer",
+                  "enabled": true,
+                  "visible": true,
+                  "readOnly": true
+                }
+              }
+            }
+          }
+        },
+        {
           "title": "Location",
           "id": "location",
           "plugins": {
