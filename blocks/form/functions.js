@@ -233,23 +233,71 @@ function populateSelectedModel(chooseModel, imageField, modelName, powerTrainFie
     powerTrainField,
     { enum: enumValues, enumNames },
   );
+  globals.functions.setProperty(
+    powerTrainField,
+    { value: enumValues[0] },
+  );
 }
 
 /**
  * Populates the dealership field with the given options
- * @param {*} chooseModel
+ * @param {*} model
  * @param {*} location
- * @param {object} dealershipField
+ * @param {*} powerTrain
+ * @param {object} list
+ * @param {object} dealerPanel
+ * @param {object} title
  * @param {scope} globals
  */
-function populateDealership(chooseModel, location, dealershipField, globals) {
+function populateDealership(model, location, powerTrain, list, dealerPanel, title, globals) {
+  if (model && location && powerTrain) {
+    fetch(`https://publish-p51113-e1377975.adobeaemcloud.com/content/nissan-forms-poc/dealerships.html?modelCode=${model}&powerTrain=${powerTrain}`)
+      .then((resp) => async () => {
+        if (resp.ok) {
+          const result = await resp.json();
+          const dealers = result.dealers || [];
+          globals.functions.setProperty(
+            list,
+            { value: dealers },
+          );
+          globals.functions.setProperty(
+            dealerPanel,
+            { label: `Showing ${dealers.length} dealerships` },
+          );
+        }
+      });
+    const name = carModelsMap[model] ? carModelsMap[model].name : '';
+    globals.functions.setProperty(
+      title,
+      { value: `with a ${name} ${powerTrain} available` },
+    );
+  }
+}
+
+/**
+ * Populate the vehicle details
+ * @param {*} dealer
+ * @param {object} vehicle
+ * @param {scope} globals
+ */
+function populateVehicleDetails(dealer, vehicle, globals) {
+  let vehicles = [];
+  if (dealer && dealer.vehicles) {
+    vehicles = dealer.vehicles;
+  }
   globals.functions.setProperty(
-    dealershipField,
-    { value: response.dealers },
+    vehicle,
+    { value: vehicles },
   );
+  if (vehicle.length > 0) {
+    globals.functions.setProperty(
+      vehicle,
+      { value: vehicles[0] },
+    );
+  }
 }
 
 // eslint-disable-next-line import/prefer-default-export
 export {
-  populateImageChoice, populateSelectedModel, populateDealership,
+  populateImageChoice, populateSelectedModel, populateDealership, populateVehicleDetails,
 };

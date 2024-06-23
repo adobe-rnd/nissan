@@ -11,7 +11,7 @@ function updateView(fieldDiv, field) {
     const {
       name,
       contact: { phone } = {},
-      address: { addressLine1, city },
+      address: { addressLine1, city } = {},
     } = field?.value || {};
     const template = `
           <div class="dealer-details">
