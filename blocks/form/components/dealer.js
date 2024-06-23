@@ -28,7 +28,7 @@ function updateView(fieldDiv, field) {
 }
 
 export default function decorate(fieldDiv, field) {
-  subscribe(fieldDiv, ['value'], updateView);
+  subscribe(fieldDiv, updateView);
   fieldDiv.dataset.valueNotification = true;
   updateView(fieldDiv, field);
   const input = fieldDiv.querySelector('input');

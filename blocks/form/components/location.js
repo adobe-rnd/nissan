@@ -5,7 +5,7 @@ export default function decorate(fieldDiv, field) {
   if (input) {
     // Load the Google Places API lazily
     loadScript(`https://maps.googleapis.com/maps/api/js?channel=Nissan-GB&key=${field.value}&libraries=places&callback=initAutocomplete`, { async: true, defer: true });
-
+    field.value = '';
     input.value = '';
     window.initAutocomplete = () => {
       // eslint-disable-next-line no-undef

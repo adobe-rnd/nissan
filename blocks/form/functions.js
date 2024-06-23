@@ -31,114 +31,6 @@ const powertrainConfigurations = [
   },
 ];
 
-const response = {
-  success: true,
-  source: 'EXTERNAL',
-  modelCode: 'JUKEF16B',
-  dealers: [
-    {
-      dealerId: '051910',
-      name: 'Glyn Hopkin North London (London)',
-      address: {
-        addressLine1: '49-51 Stamford Hill',
-        addressLine2: '',
-        postalCode: 'N16 5TB',
-        city: 'London',
-        state: null,
-      },
-      contact: {
-        phone: '020 3058 3840',
-      },
-      distance: {
-        km: 3.230844048915564,
-        miles: 2.007552797518713,
-      },
-      vehicles: [
-        {
-          modelCode: 'JUKEF16B',
-          vin: 'SJNFCAF16U2001961',
-          modelName: 'JUKE',
-          gradeName: 'Tekna',
-          modelGroupCode: 'F16B',
-          powerTrain: 'Hybrid',
-          transmission: 'Automatic',
-          driveTrain: '2WD',
-        },
-      ],
-      testdriveTypes: [
-        'dealer',
-      ],
-    },
-    {
-      dealerId: '051565',
-      name: 'Glyn Hopkin East London (London)',
-      address: {
-        addressLine1: '1021 Romford Road, Manor Park',
-        addressLine2: '',
-        postalCode: 'E12 5LH',
-        city: 'London',
-        state: null,
-      },
-      contact: {
-        phone: '020 8131 2733',
-      },
-      distance: {
-        km: 6.310120684627629,
-        miles: 3.9209259999277544,
-      },
-      vehicles: [
-        {
-          modelCode: 'JUKEF16B',
-          vin: 'SJNFCAF16U2000109',
-          modelName: 'JUKE',
-          gradeName: 'Tekna',
-          modelGroupCode: 'F16B',
-          powerTrain: 'Hybrid',
-          transmission: 'Automatic',
-          driveTrain: '2WD',
-        },
-      ],
-      testdriveTypes: [
-        'dealer',
-      ],
-    },
-    {
-      dealerId: '051856',
-      name: 'Ancaster Eltham',
-      address: {
-        addressLine1: '43-45 High Street',
-        addressLine2: '',
-        postalCode: 'SE9 1DH',
-        city: 'Eltham',
-        state: null,
-      },
-      contact: {
-        phone: '020 8331 6900',
-      },
-      distance: {
-        km: 7.083106429279261,
-        miles: 4.401236925067684,
-      },
-      vehicles: [
-        {
-          modelCode: 'JUKEF16B',
-          vin: 'SJNFCAF16U2001366',
-          modelName: 'JUKE',
-          gradeName: 'Tekna',
-          modelGroupCode: 'F16B',
-          powerTrain: 'Hybrid',
-          transmission: 'Automatic',
-          driveTrain: '2WD',
-        },
-      ],
-      testdriveTypes: [
-        'dealer',
-      ],
-    },
-  ],
-  alternatePowerTrain: false,
-};
-
 const carModels = [
   {
     id: 'JUKEF16B',
@@ -249,28 +141,27 @@ function populateSelectedModel(chooseModel, imageField, modelName, powerTrainFie
  * @param {object} title
  * @param {scope} globals
  */
-function populateDealership(model, location, powerTrain, list, dealerPanel, title, globals) {
+async function populateDealership(model, location, powerTrain, list, dealerPanel, title, globals) {
   if (model && location && powerTrain) {
-    fetch(`https://publish-p51113-e1377975.adobeaemcloud.com/content/nissan-forms-poc/dealerships.html?modelCode=${model}&powerTrain=${powerTrain}`)
-      .then((resp) => async () => {
-        if (resp.ok) {
-          const result = await resp.json();
-          const dealers = result.dealers || [];
-          globals.functions.setProperty(
-            list,
-            { value: dealers },
-          );
-          globals.functions.setProperty(
-            dealerPanel,
-            { label: `Showing ${dealers.length} dealerships` },
-          );
-        }
-      });
-    const name = carModelsMap[model] ? carModelsMap[model].name : '';
-    globals.functions.setProperty(
-      title,
-      { value: `with a ${name} ${powerTrain} available` },
-    );
+    const response = await fetch(`https://publish-p51113-e1377975.adobeaemcloud.com/content/nissan-forms-poc/dealerships.html?modelCode=${model}&powerTrain=${powerTrain}`);
+    if (response.ok) {
+      const result = await response.json();
+      const dealers = result.dealers || [];
+      globals.functions.setProperty(
+        list,
+        { value: dealers },
+      );
+      globals.functions.setProperty(
+        dealerPanel,
+        { label: `Showing ${dealers.length} dealerships` },
+      );
+
+      const name = carModelsMap[model] ? carModelsMap[model].name : '';
+      globals.functions.setProperty(
+        title,
+        { value: `with a ${name} ${powerTrain} available` },
+      );
+    }
   }
 }
 
@@ -282,19 +173,15 @@ function populateDealership(model, location, powerTrain, list, dealerPanel, titl
  */
 function populateVehicleDetails(dealer, vehicle, globals) {
   let vehicles = [];
-  if (dealer && dealer.vehicles) {
+  let selectedVehicle = null;
+  if (dealer && dealer.vehicles && dealer.vehicles.length > 0) {
     vehicles = dealer.vehicles;
+    [selectedVehicle] = vehicles;
   }
   globals.functions.setProperty(
     vehicle,
-    { value: vehicles },
+    { enum: vehicles, value: selectedVehicle },
   );
-  if (vehicle.length > 0) {
-    globals.functions.setProperty(
-      vehicle,
-      { value: vehicles[0] },
-    );
-  }
 }
 
 // eslint-disable-next-line import/prefer-default-export

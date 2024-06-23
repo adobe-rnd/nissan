@@ -1,20 +1,27 @@
 import { subscribe } from '../util.js';
 
+function getLabel(enumValues, enumNames, index) {
+  let title = enumValues?.[index];
+  let description = enumNames?.[index] || enumValues?.[index];
+  if (typeof enumValues[index] === 'object') {
+    const {
+      modelCode, gradeName, powerTrain, driveTrain, transmission,
+    } = enumValues[index] || {};
+    title = `${modelCode} ${gradeName}`;
+    description = `${powerTrain} ${driveTrain} ${transmission}`;
+  }
+  const template = `<div class="card-details">
+                        <div>${title}</div>
+                        <div>${description}</div>
+                    </div>`;
+
+  return template;
+}
+
 function updateEnum(fieldDiv, field) {
   fieldDiv.querySelectorAll('.radio-wrapper').forEach((wrapper, index) => {
     const label = wrapper.querySelector('label');
-    const div = document.createElement('div');
-    div.className = 'card-details';
-    const title = document.createElement('div');
-    title.textContent = field?.enum?.[index];
-    div.appendChild(title);
-
-    const description = document.createElement('div');
-    description.textContent = field?.enumNames?.[index] || field?.enum?.[index];
-    div.appendChild(description);
-
-    label.innerHTML = '';
-    label.appendChild(div);
+    label.innerHTML = getLabel(field?.enum, field?.enumNames, index);
 
     const radio = wrapper.querySelector('input');
     radio.style.display = 'none';
@@ -23,7 +30,7 @@ function updateEnum(fieldDiv, field) {
 }
 
 export default function decorate(fieldDiv, field) {
-  subscribe(fieldDiv, ['enum', 'enumNames'], updateEnum);
+  subscribe(fieldDiv, updateEnum);
   updateEnum(fieldDiv, field);
   return fieldDiv;
 }
