@@ -199,6 +199,10 @@ function submitFailure(response, error) {
  * @param {scope} globals
  */
 function submitToRestEndpoint(url, globals) {
+
+  window.parent.location.href = "https://main--nissanleaf--adobehols.hlx.live/thank-you-testdrive-booked";
+  
+  /*
   const form = document.querySelector('form');
   const valid = form.checkValidity();
   if (valid) {
@@ -221,6 +225,7 @@ function submitToRestEndpoint(url, globals) {
         submitFailure(null, form);
       });
   }
+  */
 }
 
 // eslint-disable-next-line import/prefer-default-export
